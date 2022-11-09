@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 
 int numBytesInFile(){
         //count number of bytes in quote.txt
@@ -21,6 +22,7 @@ int main(int argc, char* argv[]){
                 return EXIT_FAILURE;
         }
 
+
         //Opening the file quote.txt
         FILE *fp;
         fp = fopen("quote.txt", "r");
@@ -39,7 +41,10 @@ int main(int argc, char* argv[]){
         int sz = numBytesInFile();
 
         //Generate n random numbers
+
+
         int rand_pos [n];
+        srand(time(NULL));
         for(int i=0 ; i<n ; i++){
                 double r = rand()%sz;
                 rand_pos[i] = r;
@@ -52,8 +57,7 @@ int main(int argc, char* argv[]){
                 fseek(fp, rand_pos[i], SEEK_SET);
                 fread(buffer, sizeof(char), m, fp);
                 //output content from buffer to terminal
-                printf("%s,  ", buffer);
+                printf(">%s<\n", buffer);
         }
         return 0;
-
 }

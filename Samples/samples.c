@@ -3,9 +3,9 @@
 #include <unistd.h>
 #include <time.h>
 
-int numBytesInFile(){
+int numBytesInFile(char *filename){
         FILE *file;
-        file = fopen("quote.txt", "r");
+        file = fopen(filename, "r");
         int nBytes = 0;
         char c;
         while((c = fgetc(file)) != EOF){nBytes++;}
@@ -13,17 +13,18 @@ int numBytesInFile(){
 }
 
 int main(int argc, char* argv[]){
-        /* check if exactly m and n */
-        if (argc <= 2) {
-                printf("You need two insert two arguments (n-fragments & m-character)\n");
+        /* check if exactly fileName m and n */
+        if (argc <= 3) {
+                printf("You need two insert two arguments (filename, n-fragments & m-character)\n");
                 return EXIT_FAILURE;
         }
-        int n = atoi(argv[1]); //Transform arguments to int
-        int m = atoi(argv[2]);
+        char *filename = argv[1];
+        int n = atoi(argv[2]); //Transform arguments to int
+        int m = atoi(argv[3]);
 
         //Opening the file quote.txt
         FILE *file;
-        file = fopen("quote.txt", "r");
+        file = fopen(filename, "r");
         //Checking if the file was opened correctly
         if(file == NULL){
                 printf("Couldn't open the file\n");
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]){
         }
 
         //Finding the number of bytes in the file
-        int sz = numBytesInFile();
+        int sz = numBytesInFile(filename);
 
         srand(time(NULL)); //Creating a sub-random sid
 

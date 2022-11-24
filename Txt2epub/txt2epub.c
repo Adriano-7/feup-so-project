@@ -7,13 +7,14 @@
 
 int main(int argc, char* argv[]){
     if (argc <= 1) {
-        printf("You need to provide at least one .txt file to be converted \n");
+        printf("You need to provide at least one .txt file to be converted to .epub\n");
         return EXIT_FAILURE;
     }
 
     int n = argc - 1; //Number of files to be converted
     int pid = 0; //Process id
     int status = 0; //Status of the process
+
 
     for(int i=0 ; i<n ; i++){//Por cada ficheiro
         pid = fork(); //Crio um processo filho
@@ -25,9 +26,11 @@ int main(int argc, char* argv[]){
             strcpy(outputName, argv[i+1]);
             outputName[strlen(argv[i+1]) - 4] = '\0';
             strcat(outputName, ".epub");
+            
+            char *args[] = {"pandoc","--quiet", argv[i+1], "-o", outputName, NULL};
+            if(execvp("pandoc", args)<0){ printf("Error in execvp converting to .epub\n"); return EXIT_FAILURE;}
 
-            char *args[] = {"pandoc", argv[i+1], "-o", outputName, NULL};
-            execvp("pandoc", args);
+            free(outputName);
             wait(&status);
         }
         else{ //O pai espera pelos filhos
@@ -35,6 +38,7 @@ int main(int argc, char* argv[]){
                 wait(&status);
             }
         }
+        
     }
     return 0;
 }

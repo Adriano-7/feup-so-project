@@ -1,3 +1,0 @@
-/home/adriano/Desktop/Projetos/SO/Projeto/Projeto_SO2022/Tokering/cmake-build-debug/CMakeFiles/Tokering.dir
-/home/adriano/Desktop/Projetos/SO/Projeto/Projeto_SO2022/Tokering/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/adriano/Desktop/Projetos/SO/Projeto/Projeto_SO2022/Tokering/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,1 +1,0 @@
-CMakeLists.txt not found in /home/evans24/Desktop/Projeto_SO2022 Select CMakeLists.txt

@@ -30,15 +30,19 @@ int main(int argc, char* argv[]){
             char *args[] = {"pandoc","--quiet", argv[i+1], "-o", outputName, NULL};
             if(execvp("pandoc", args)<0){ printf("Error in execvp converting to .epub\n"); return EXIT_FAILURE;}
 
+            char *args2[] = {"zip", "epubs.zip", outputname, NULL};
+            if(execvp("zip", args2)<0){ printf("Error in execvp zipping .epub\n"); return EXIT_FAILURE;}
+
+
             free(outputName);
             wait(&status);
+
         }
         else{ //O pai espera pelos filhos
             for(int i=0 ; i<n ; i++){
                 wait(&status);
             }
         }
-        
     }
     return 0;
 }

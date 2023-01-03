@@ -16,25 +16,26 @@ int main(int argc, char* argv[]){
     int pid = 0; //Process id
     int status = 0; //Status of the process
 
-    char* zipArguments = malloc(16*n*sizeof(char));
-    zipArguments[0] = "zip"; zipArguments[1] = "ebooks.zip"; zipArguments[2] = "-qq"; zipArguments[argc+1] = NULL;
+    char** zipArguments;
+    zipArguments = malloc(16*n*sizeof(char));
+    zipArguments[0] = malloc(5); zipArguments[1] = malloc(12);
+    strcpy(zipArguments[0], "zip"); strcpy(zipArguments[1], "ebooks.zip"); zipArguments[argc+1] = NULL;
 
     for(int i=0 ; i<n ; i++){
         char* outputName = malloc(strlen(argv[i+1]) + 5);
         strcpy(outputName, argv[i+1]);
         outputName[strlen(argv[i+1]) - 4] = '\0';
         strcat(outputName, ".epub");
-        zipArguments[i+3] = outputName;
+
+        zipArguments[i+2] = malloc(strlen(outputName));
+        strcpy(zipArguments[i+2], outputName);
 
         pid = fork();
         if(pid == 0){
             printf("[pid%d] converting %s\n", getpid(), argv[i+1]);
-            
             char *args[] = {"pandoc","--quiet", argv[i+1], "-o", outputName, NULL};
             if(execvp("pandoc", args)<0){ printf("Error in execvp converting to .epub\n"); return EXIT_FAILURE;}
-            
             free(outputName);
-            wait(&status);
         }
         else{
             for(int i=0 ; i<n ; i++){
@@ -44,6 +45,10 @@ int main(int argc, char* argv[]){
     }
 
     if(execvp("zip", zipArguments)<0){ printf("Error in execvp while zipping"); return EXIT_FAILURE;}
+
+    for(int i=0 ; i<16*n ; i++){
+        free(zipArguments[i]);
+    }    
     free(zipArguments);
     return EXIT_SUCCESS;
 }
